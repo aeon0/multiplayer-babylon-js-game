@@ -1,16 +1,20 @@
 ## Multiplayer Babylon JS "Game" with Client & Server-Side Physics Engine
 
 You can open the Demo in two different browser tabs, that way you spawn two different players into the world
-<br>Demo here: ...
+<br>Demo here: http://185.82.21.82:8700
 
 #### Run Localy
 ```
 >> cd client
+>> npm install
+>> tsc
 >> npm start
 ```
 In a new console:
 ```
 >> cd server
+>> npm install
+>> tsc
 >> npm start
 ```
 
