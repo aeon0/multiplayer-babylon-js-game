@@ -78,7 +78,7 @@ export class Player {
             //let counter = 0;
              
             // Well then lets just jump around if y < 5
-            console.log(this.playerMesh.position);
+            //console.log(this.playerMesh.position);
             if(this.playerMesh.position.y < 3){
                 let jump_direction = new BABYLON.Vector3(0, 70, 0);
                 let jump: BABYLON.Vector3 = jump_direction.multiplyByFloats(force, force, force);
