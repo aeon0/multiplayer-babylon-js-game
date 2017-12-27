@@ -22,3 +22,12 @@ html, body {
     padding: 5px;
     text-align: left;
 }
+#info_label{
+    position: fixed;
+    color: gray;
+    background: #00000052;
+    padding: 7px;
+    top: 6px;
+    left: 6px;
+    font-size: 16px;
+}
