@@ -1,0 +1,23 @@
+{
+  "name": "babylonjs-multiplayer-client",
+  "version": "0.0.1",
+  "description": "Decentrilized & Destributed multiplayer prototype",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc --w",
+    "start": "node client.js",
+    "dev": "npm-run-all -p build watch start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babylonjs": "^3.2.0-alpha0",
+    "express": "^4.16.2",
+    "npm-run-all": "^4.1.2",
+    "path": "^0.12.7",
+    "systemjs": "^0.20.19",
+    "typestate": "^1.0.5"
+  }
+}
