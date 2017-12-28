@@ -104,7 +104,7 @@ export class Player {
             this.keyDown[JUMP] = false;
             if(this.isOnGround()){
                 let jump_direction = new BABYLON.Vector3(0, 1, 0);
-                force *= 400;
+                force = 20;
                 let jump: BABYLON.Vector3 = jump_direction.multiplyByFloats(force, force, force);
                 this.playerMesh.applyImpulse(direction.negate(), this.playerMesh.absolutePosition);
                 RouterService.sendInteraction(jump_direction, force);
