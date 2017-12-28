@@ -53,6 +53,28 @@ export class Player {
         this.keyDown[evt.keyCode] = false;
     }
 
+    private isOnGround(): boolean{
+        let isOnGround: boolean = false;
+
+        let minY = this.playerMesh.getBoundingInfo().minimum.y + this.playerMesh.position.y;
+        let pos = this.playerMesh.absolutePosition.clone();
+        pos.y = minY;
+
+        var ray: BABYLON.Ray = new BABYLON.Ray(this.playerMesh.absolutePosition, new BABYLON.Vector3(0, -1, 0));
+     
+        let counter: number = 0;
+        let info = this.scene.pickWithRay(ray, (mesh) => {
+            return !(mesh === this.playerMesh);
+        });
+    
+        if(info.hit){
+            let pickedY = info.pickedPoint.y;
+            isOnGround = (pickedY + 0.15) >= minY;
+        }
+
+        return isOnGround;
+    }
+
     public applyMovement(camera: Camera, deltaTime: number){
         let contactPoint: BABYLON.Vector3 = this.playerMesh.absolutePosition.clone();
         contactPoint.y += 20;
@@ -73,14 +95,8 @@ export class Player {
             camera.changeCameraRotation(-0.06);
         }
         if(this.keyDown[JUMP]){
-            // Test if ball is on the ground... not sure how to do that...
-            //let rayPick = new BABYLON.Ray(this.playerMesh.position, new BABYLON.Vector3(0, -1, 0));
-            //let counter = 0;
-             
-            // Well then lets just jump around if y < 5
-            //console.log(this.playerMesh.position);
-            if(this.playerMesh.position.y < 3){
-                let jump_direction = new BABYLON.Vector3(0, 70, 0);
+            if(this.isOnGround()){
+                let jump_direction = new BABYLON.Vector3(0, 400, 0);
                 let jump: BABYLON.Vector3 = jump_direction.multiplyByFloats(force, force, force);
                 this.playerMesh.applyImpulse(direction.negate(), this.playerMesh.absolutePosition);
                 RouterService.sendInteraction(jump_direction, force);
