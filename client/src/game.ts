@@ -17,6 +17,9 @@ export class Game {
     private area: Area;
     private enemys: { [id: string]: Enemy } = {};
 
+    private ts_lastUpdate: number = null;
+    private update_rate: number = null;
+
 
     constructor(canvasElement: string) {
         this.canvas = document.getElementById(canvasElement);
@@ -27,8 +30,8 @@ export class Game {
         this.camera = new Camera(this.scene);
         this.area = new Area(this.scene);
 
-        RouterService.registerFunction('update', this, this.updateWorld);
-        RouterService.registerFunction('remove_player', this, this.removeEnemy);
+        RouterService.registerFunction('update', this.updateWorld, this);
+        RouterService.registerFunction('remove_player', this.removeEnemy, this);
 
         window.addEventListener("resize", () => {
             this.engine.resize();
@@ -78,6 +81,22 @@ export class Game {
     }
 
     public updateWorld(msg: any) {
+        if(this.ts_lastUpdate === null){
+            this.ts_lastUpdate = Date.now();
+        }
+        else{
+            let lastUpdate = this.ts_lastUpdate;
+            this.ts_lastUpdate = Date.now();
+            let diff = this.ts_lastUpdate - lastUpdate;
+            let newUpdate = Math.min(Math.floor(1000/diff), 60);
+ 
+            // Otherwise it is quite jumpy and you can't read the numbers
+            let updateDiff = Math.abs(newUpdate - this.update_rate);
+            if(updateDiff > 4) this.update_rate = newUpdate;
+
+            var updateLabel = document.getElementById("update_label");
+            updateLabel.innerHTML = this.update_rate + " update/s";
+        }
         Object.keys(msg.players).forEach(key => {
             let config = msg.players[key];
             let linVelo: BABYLON.Vector3 = this.createVector(config.linearVelocity);

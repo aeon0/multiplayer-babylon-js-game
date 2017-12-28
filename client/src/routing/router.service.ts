@@ -19,21 +19,23 @@ export namespace RouterService {
     }
     // ==================================================
 
-    let messageMap: { [name: string]: Array<[any, Function]> } = {
+    // the first value of the tuple [any, Function] is the context (usually 'this' of a class)
+    let messageMap: { [name: string]: Array<Function> } = {
         "update": [],
         "remove_player": []
     };
 
     export function routeMessages(msg: any) {
         if (messageMap[msg.type] !== undefined) {
-            messageMap[msg.type].forEach(tuple => {
-                tuple[1] = tuple[1].bind(tuple[0]);
-                tuple[1](msg);
+            messageMap[msg.type].forEach(func => {
+                func(msg);
             })
         }
     }
 
-    export function registerFunction(type: string, context: any, func: Function) {
-        messageMap[type].push([context, func]);
+    export function registerFunction(type: string, func: Function, context: any = null, ) {
+        if(context !== null)
+            func = func.bind(context);
+        messageMap[type].push(func);
     }
 }

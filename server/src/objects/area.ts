@@ -10,8 +10,9 @@ export class Area{
         let plane = BABYLON.Mesh.CreateGround("ground1", 460, 460, 2, this.scene);
         this.mesh.push(plane); 
 
-        let cylinderMesh = BABYLON.Mesh.CreateCylinder("object", 20, 30, 30, 5, 5, this.scene);
-        this.mesh.push(cylinderMesh);
+        let centerObj = BABYLON.Mesh.CreateBox("object", 40, this.scene);
+        centerObj.position.y = -17;
+        this.mesh.push(centerObj);
 
         let wall_top: BABYLON.Mesh = BABYLON.MeshBuilder.CreateBox("wall_top", {width: 460, height: 20, depth: 20}, this.scene);
         let wall_bottom: BABYLON.Mesh = wall_top.clone("wall_bottom");

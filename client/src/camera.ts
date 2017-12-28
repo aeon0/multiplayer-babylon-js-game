@@ -4,7 +4,7 @@ export class Camera {
     private scene: BABYLON.Scene;
     private followMesh: BABYLON.Mesh;
     private canvas: any;
-    private radius: number = 40; 
+    private radius: number = 55; 
 
     constructor(scene: BABYLON.Scene) {
         this.scene = scene;

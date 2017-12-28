@@ -13,16 +13,24 @@ export class Area{
         plane.material = planeMaterial;
         this.mesh.push(plane); 
 
-        let cylinderMesh = BABYLON.Mesh.CreateCylinder("object", 20, 30, 30, 5, 5, this.scene);
-        var cylinderMaterial = new BABYLON.StandardMaterial("player_material", this.scene);
-        cylinderMaterial.diffuseColor = new BABYLON.Color3(0.36, 0.4, 0.4);
-        cylinderMesh.material = cylinderMaterial;
-        this.mesh.push(cylinderMesh);
+        let centerObj = BABYLON.Mesh.CreateBox("object", 40, this.scene);
+        centerObj.position.y = -17;
+        var objMaterial = new BABYLON.StandardMaterial("player_material", this.scene);
+        objMaterial.diffuseColor = new BABYLON.Color3(0.36, 0.4, 0.4);
+        centerObj.material = objMaterial;
+        this.mesh.push(centerObj);
 
-        let wall_top: BABYLON.Mesh = BABYLON.MeshBuilder.CreateBox("wall_top", {width: 460, height: 20, depth: 20}, this.scene);
+        let wall_material = new BABYLON.StandardMaterial("player_material", this.scene);
+        wall_material.alpha  = 0.4;
+
+        let wall_top: BABYLON.Mesh = BABYLON.MeshBuilder.CreateBox("wall_top", { width: 460, height: 20, depth: 10}, this.scene);
+        wall_top.material = wall_material;
         let wall_bottom: BABYLON.Mesh = wall_top.clone("wall_bottom");
+        wall_bottom.material = wall_material;
         let wall_left: BABYLON.Mesh = wall_top.clone("wall_left");
+        wall_left.material = wall_material;
         let wall_right: BABYLON.Mesh = wall_top.clone("wall_right");
+        wall_right.material = wall_material;
         wall_top.position.z = 230;
         wall_bottom.position.z = -230;
         wall_left.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2)

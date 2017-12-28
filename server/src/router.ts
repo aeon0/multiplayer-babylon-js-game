@@ -11,20 +11,29 @@ export namespace Router {
 
     let messageMap: { [key: string]: Function } = {
         "player_interaction": reciveInteraction,
-        "init_game_state": initPlayer
+        "init_game_state": initPlayer,
+        "ping": sendPong,
     }
 
     export function routeMessage(msg: any, client: WebSocket, playerId: string) {
         if (messageMap[msg.type] !== undefined) {
-            messageMap[msg.type](msg.msg, playerId, msg.origin, msg.id, client);
+            messageMap[msg.type](msg.msg, playerId, client, msg.origin, msg.id, );
         }
     }
 
+    function sendPong(data: any, playerId: string, client: WebSocket, origin: string, requestId: string){
+        client.send(JSON.stringify({
+            ts: data,
+            origin,
+            id: requestId
+        }))
+    }
+ 
     function reciveInteraction(data: any, playerId: string) {
         world.applyMovment(playerId, data);
     }
 
-    function initPlayer(data: any, playerId: string, origin: string, requestId: string, client: WebSocket) {
+    function initPlayer(data: any, playerId: string, client: WebSocket, origin: string, requestId: string) {
         playerId = createID();
 
         world.createPlayer(playerId, data.name);

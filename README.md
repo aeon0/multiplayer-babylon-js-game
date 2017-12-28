@@ -22,6 +22,9 @@ In a new console:
 
 Then visit http://localhost:9000. 
 
+#### Development
+If you want to play around with the code you can run `>> npm run dev`. (nodemon must be installed globaly). This will watch any chances for the typescript files, recompiles and on the server side, also restarts the server to serve the changes. 
+
 
 ### What is this?
 Testing the server side "NullEngine()" from Babylon.js. This enables you to run Babylon.js on a node server without having to render anything to the screen. That means you can simulate the world on your Clients as well as on the Server. 
