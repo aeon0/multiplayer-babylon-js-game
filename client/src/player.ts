@@ -13,6 +13,7 @@ const JUMP: number = 32; // Spacebar
 export class Player {
     private scene: BABYLON.Scene;
     private keyDown: object = {};
+    private keyFired: object = {};
     public playerMesh: BABYLON.Mesh;
     public id: string;
 
@@ -34,7 +35,8 @@ export class Player {
             this.playerMesh,
             BABYLON.PhysicsImpostor.SphereImpostor, {
                 mass: 1,
-                friction: 100
+                friction: 100,
+                restitution: 0.35
             }, this.scene);
         
         lights.addShadowCaster(this.playerMesh);
@@ -43,14 +45,18 @@ export class Player {
         window.addEventListener('keydown', (event: KeyboardEvent) => { this.keyDownEvt(event); }, false);
         window.addEventListener('keyup', (event: KeyboardEvent) => { this.keyUpEvt(event); }, false);
     } 
-
+ 
     private keyDownEvt(evt: KeyboardEvent) {
         //SocketService.test();
-        this.keyDown[evt.keyCode] = true;
+        if(!this.keyFired[evt.keyCode]){
+            this.keyDown[evt.keyCode] = true;
+            this.keyFired[evt.keyCode] = true;
+        }
     }
-
+ 
     private keyUpEvt(evt: KeyboardEvent) {
         this.keyDown[evt.keyCode] = false;
+        this.keyFired[evt.keyCode] = false;
     }
 
     private isOnGround(): boolean{
@@ -69,7 +75,7 @@ export class Player {
     
         if(info.hit){
             let pickedY = info.pickedPoint.y;
-            isOnGround = (pickedY + 0.15) >= minY;
+            isOnGround = (pickedY + 0.2) >= minY;
         }
 
         return isOnGround;
@@ -94,9 +100,11 @@ export class Player {
         if(this.keyDown[RIGHT]){
             camera.changeCameraRotation(-0.06);
         }
-        if(this.keyDown[JUMP]){
+        if(this.keyDown[JUMP]){            
+            this.keyDown[JUMP] = false;
             if(this.isOnGround()){
-                let jump_direction = new BABYLON.Vector3(0, 400, 0);
+                let jump_direction = new BABYLON.Vector3(0, 1, 0);
+                force *= 400;
                 let jump: BABYLON.Vector3 = jump_direction.multiplyByFloats(force, force, force);
                 this.playerMesh.applyImpulse(direction.negate(), this.playerMesh.absolutePosition);
                 RouterService.sendInteraction(jump_direction, force);
