@@ -6,9 +6,12 @@ import { players, PlayerState } from './state';
 
 
 export class World {
+    private maxFps: number = 40;
+
     private engine: BABYLON.Engine;
     private scene: BABYLON.Scene;
     private area: Area;
+    private last_ts: number = null;
     private playerObjs: { [id: string]: Player } = {};
 
 
@@ -29,23 +32,31 @@ export class World {
         this.area.init();
 
         this.scene.executeWhenReady(() => {
+            let elapsedTime = (1000 / this.maxFps);
             this.engine.runRenderLoop(() => {
-                this.scene.render();
+                if(this.last_ts === null){
+                    this.last_ts = Date.now();
+                }
+                else{
+                    let tmp_ts = this.last_ts;
+                    let curr_ts = Date.now();
+                    let test_time = curr_ts - tmp_ts;
 
-                //let ground = this.scene.getMeshByName("ground1");
-                //console.log(ground.position);
+                    if(test_time > elapsedTime){
+                        this.scene.render();
+                        Object.keys(this.playerObjs).forEach((key) => {
+                            let lv = this.playerObjs[key].playerMesh.physicsImpostor.getLinearVelocity();
+                            let av = this.playerObjs[key].playerMesh.physicsImpostor.getAngularVelocity();
+                            let pos = this.playerObjs[key].playerMesh.position;
+                            players[key].angularVelocity = av;
+                            players[key].linearVelocity = lv;
+                            players[key].position = pos;
+                        });
+                        Router.updateWorld();
 
-                // ToDo: Update global game state and send to all clients!
-                Object.keys(this.playerObjs).forEach((key) => {
-                    let lv = this.playerObjs[key].playerMesh.physicsImpostor.getLinearVelocity();
-                    let av = this.playerObjs[key].playerMesh.physicsImpostor.getAngularVelocity();
-                    let pos = this.playerObjs[key].playerMesh.position;
-                    players[key].angularVelocity = av;
-                    players[key].linearVelocity = lv;
-                    players[key].position = pos;
-                });
-
-                Router.updateWorld();
+                        this.last_ts = curr_ts;
+                    }
+                }
             });
         });
     }
