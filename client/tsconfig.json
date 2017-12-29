@@ -7,7 +7,7 @@
         "preserveConstEnums": true,
         "moduleResolution": "node",
         "outDir": "public/js",
-        "rootDir": "./src",
+        "rootDir": ".",
         "sourceMap": false,
         "typeRoots": [
             "./node_modules/babylonjs",

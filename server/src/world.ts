@@ -4,14 +4,13 @@ import { Player } from './objects/player';
 import { Router } from './router';
 import { players, PlayerState } from './state';
 
+import { CONFIG } from './../config';
+
 
 export class World {
-    private maxFps: number = 40;
-
     private engine: BABYLON.Engine;
     private scene: BABYLON.Scene;
     private area: Area;
-    private last_ts: number = null;
     private playerObjs: { [id: string]: Player } = {};
 
 
@@ -32,39 +31,29 @@ export class World {
         this.area.init();
 
         this.scene.executeWhenReady(() => {
-            let elapsedTime = (1000 / this.maxFps);
             this.engine.runRenderLoop(() => {
-                if(this.last_ts === null){
-                    this.last_ts = Date.now();
-                }
-                else{
-                    let tmp_ts = this.last_ts;
-                    let curr_ts = Date.now();
-                    let test_time = curr_ts - tmp_ts;
-
-                    if(test_time > elapsedTime){
-                        this.scene.render();
-                        Object.keys(this.playerObjs).forEach((key) => {
-                            let lv = this.playerObjs[key].playerMesh.physicsImpostor.getLinearVelocity();
-                            let av = this.playerObjs[key].playerMesh.physicsImpostor.getAngularVelocity();
-                            let pos = this.playerObjs[key].playerMesh.position;
-                            players[key].angularVelocity = av;
-                            players[key].linearVelocity = lv;
-                            players[key].position = pos;
-                        });
-                        Router.updateWorld();
-
-                        this.last_ts = curr_ts;
-                    }
-                }
+                this.scene.render();
             });
+
+            // Update to clients in fixed interval
+            setInterval(() => {
+                Object.keys(this.playerObjs).forEach((key) => {
+                    let lv = this.playerObjs[key].playerMesh.physicsImpostor.getLinearVelocity();
+                    let av = this.playerObjs[key].playerMesh.physicsImpostor.getAngularVelocity();
+                    let pos = this.playerObjs[key].playerMesh.position;
+                    players[key].angularVelocity = av;
+                    players[key].linearVelocity = lv;
+                    players[key].position = pos;
+                });
+                Router.updateWorld();
+            }, (1000 / CONFIG.server_update_rate));
         });
     }
 
-    public applyMovment(key: string, data: any){
+    public applyMovment(key: string, data: any) {
         let dir: BABYLON.Vector3 = this.createVector(data.direction);
-        let force: number = data.force; 
-        
+        let force: number = data.force;
+
         this.playerObjs[key].applyMovement(dir, force);
     }
 
@@ -91,7 +80,7 @@ export class World {
         delete players[id];
 
         let player: Player = this.playerObjs[id];
-        if(player !== undefined)
+        if (player !== undefined)
             player.playerMesh.dispose();
         delete this.playerObjs[id];
     }

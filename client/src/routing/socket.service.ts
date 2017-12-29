@@ -1,15 +1,15 @@
 import { RouterService } from "./router.service";
 
-const SERVER_URL: string = "ws://localhost:8900";
-
-export namespace SocketService {
+import { CONFIG } from "./../../config";
+ 
+export namespace SocketService { 
 
     let socket: WebSocket;
     let idCounter: number = 0;
     let sendCallbacks: { [id: string]: Function; } = {};
 
     export function init() {
-        socket = new WebSocket(SERVER_URL);
+        socket = new WebSocket(CONFIG.server_endpoint);
         socket.onmessage = handleMessage;
         return socket;
     }
