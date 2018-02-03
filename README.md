@@ -22,7 +22,7 @@ In a new console:
 >> npm start
 ```
 
-Then visit http://localhost:9000. 
+Then visit http://localhost:8700. 
 
 #### Development
 If you want to play around with the code you can run `>> npm run dev`. (nodemon must be installed globaly). This will watch any chances for the typescript files, recompiles and on the server side, also restarts the server to serve the changes. 
