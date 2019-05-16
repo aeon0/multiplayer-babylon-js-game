@@ -6,8 +6,6 @@ You can open the Demo in two different browser tabs, that way you spawn two diff
 <br>Demo here: http://185.82.21.82:8700
 
 #### Run Localy
-Rename the files `server/config.template.ts` to `server/config.ts` and `client/config.template.ts` to `client/config.ts`
-
 ```
 >> cd client
 >> npm install
