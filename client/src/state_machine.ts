@@ -3,11 +3,7 @@
 
 export interface StateMachineConfig<StateEnum, EventEnum> {
     initial?: StateEnum,
-    events: [{
-        name: EventEnum,
-        from: StateEnum | StateEnum[],
-        to: StateEnum
-    }],
+    events: any,
     debug?: boolean
 }
 
@@ -36,6 +32,7 @@ export class StateMachine<StateEnum, EventEnum> {
     private debug: boolean;
 
     constructor(cfg: StateMachineConfig<StateEnum, EventEnum>) {
+        console.log(cfg);
         this.debug = cfg.debug || false;
         this.inital = cfg.initial;
         this.state = cfg.initial;

@@ -21,36 +21,11 @@ export class Camera {
 
         // Lock cursor
         this.canvas.addEventListener("click", (evt) => {
-            this.canvas.requestPointerLock = this.canvas.requestPointerLock ||
-                this.canvas.msRequestPointerLock ||
-                this.canvas.mozRequestPointerLock ||
-                this.canvas.webkitRequestPointerLock;
             if (this.canvas.requestPointerLock) {
                 this.canvas.requestPointerLock();
             }
         }, false);
-
-        // Attach events to the document
-        document.addEventListener("pointerlockchange", (evt) => this.pointerlockchange(evt), false);
-        document.addEventListener("mspointerlockchange", (evt) => this.pointerlockchange(evt), false);
-        document.addEventListener("mozpointerlockchange", (evt) => this.pointerlockchange(evt), false);
-        document.addEventListener("webkitpointerlockchange", (evt) => this.pointerlockchange(evt), false);
     }
-
-    // Event listener when the pointerlock is updated (or removed by pressing ESC for example).
-    private pointerlockchange(event: Event) {
-        let controlEnabled: boolean = (
-            document.mozPointerLockElement === this.canvas
-            || document.webkitPointerLockElement === this.canvas
-            || document.msPointerLockElement === this.canvas
-            || document.pointerLockElement === this.canvas);
-        // If the user is alreday locked
-        if (!controlEnabled) {
-            //this.camera.detachControl(this.canvas);
-        } else {
-            //this.camera.attachControl(this.canvas, true);
-        }
-    };
 
     public getCamDirection(): BABYLON.Vector3 {
         return this.camera.getTarget().subtract(this.camera.position).normalize();

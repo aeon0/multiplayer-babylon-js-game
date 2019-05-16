@@ -25,7 +25,6 @@ export let fsm = new StateMachine<States, Events>({
         { name: Events.CONNECTED, from: States.CONNECTING_TO_SERVER, to: States.LOADING_GAME },
         { name: Events.GAME_LOADED, from: States.LOADING_GAME, to: States.INIT_GAME_STATE },
         { name: Events.STATE_INIT_DONE, from: States.INIT_GAME_STATE, to: States.RUN_GAME },
-
     ]
 });
 

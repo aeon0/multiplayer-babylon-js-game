@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="public/css/main.css">
 
-    <script src="node_modules/babylonjs/dist/preview release/babylon.js"></script>
-    <script src="node_modules/babylonjs/dist/preview release/Oimo.js"></script>
+    <script src="node_modules/babylonjs/babylon.js"></script>
+    <script src="node_modules/babylonjs/Oimo.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
 
     <script src="public/config/systemjs.config.js"></script>
@@ -20,7 +20,7 @@
         System.import('app').then(function () {
             //console.log('Imported');
         }).catch(function (err) {
-            console.error(err);
+            console.log(err.message);
         });
     </script>
 </head>

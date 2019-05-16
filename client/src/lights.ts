@@ -21,7 +21,6 @@ export class Lights{
 
         if(useShadowGenerator){
             this.shadowGenerator = new BABYLON.ShadowGenerator(4192, this.lightDirectional);
-            this.shadowGenerator.useVarianceShadowMap = true;
         }
     }
 
