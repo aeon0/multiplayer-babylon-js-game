@@ -1,4 +1,4 @@
-import * as BABYLON from 'babylonjs';
+import { Engine, NullEngine, Scene, Vector3, OimoJSPlugin, ArcRotateCamera } from 'babylonjs';
 import { Area } from './objects/area';
 import { Player } from './objects/player';
 import { Router } from './router';
@@ -8,24 +8,25 @@ import { CONFIG } from './../config';
 
 
 export class World {
-    private engine: BABYLON.Engine;
-    private scene: BABYLON.Scene;
+    private engine: Engine;
+    private scene: Scene;
     private area: Area;
     private playerObjs: { [id: string]: Player } = {};
 
 
     constructor() {
-        this.engine = new BABYLON.NullEngine();
-        this.scene = new BABYLON.Scene(this.engine);
+        this.engine = new NullEngine();
+        this.scene = new Scene(this.engine);
         this.area = new Area(this.scene);
     }
 
     public init() {
         // Not sure why a camera is needed on the server side...
-        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, BABYLON.Vector3.Zero(), this.scene);
+        var camera = new ArcRotateCamera("Camera", 0, 0.8, 100, Vector3.Zero(), this.scene);
 
         // Important to first enable physics before creating any mesh
-        this.scene.enablePhysics(new BABYLON.Vector3(0, -20, 0), new BABYLON.OimoJSPlugin());
+        const OIMO = require("oimo");
+        this.scene.enablePhysics(new Vector3(0, -20, 0), new OimoJSPlugin(undefined, OIMO));
 
         // Creat mesh objects
         this.area.init();
@@ -51,7 +52,7 @@ export class World {
     }
 
     public applyMovment(key: string, data: any) {
-        let dir: BABYLON.Vector3 = this.createVector(data.direction);
+        let dir: Vector3 = this.createVector(data.direction);
         let force: number = data.force;
 
         this.playerObjs[key].applyMovement(dir, force);
@@ -85,8 +86,8 @@ export class World {
         delete this.playerObjs[id];
     }
 
-    private createVector(config: any): BABYLON.Vector3 {
-        let vec = new BABYLON.Vector3(
+    private createVector(config: any): Vector3 {
+        let vec = new Vector3(
             config.x, config.y, config.z
         );
         return vec;
