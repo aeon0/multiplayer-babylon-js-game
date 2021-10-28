@@ -1,0 +1,44 @@
+html, body {
+	overflow: hidden;
+	width   : 100%;
+	height  : 100%;
+	margin  : 0;
+	padding : 0;
+	font-family: 'Roboto', sans-serif;
+	font-size: 17px;
+    font-weight: 400;
+}
+#renderCanvas {
+	width   : 100%;
+	height  : 100%;
+}
+.metrics{
+    position: fixed;
+    color: White;
+    background: rgb(34, 34, 34) none repeat scroll 0% 0%;
+    width: 65px;
+    height: 24px;
+    padding: 5px;
+    text-align: left;
+    bottom: 0px;
+}
+#fps_label{
+    
+}
+#update_label{
+    width: 107px;
+    margin-left: 80px;
+}
+#ping_label{
+    width: 120px;
+    margin-left: 203px;
+}
+#info_label{
+    position: fixed;
+    color: gray;
+    background: #00000052;
+    padding: 7px;
+    top: 6px;
+    left: 6px;
+    font-size: 16px;
+}

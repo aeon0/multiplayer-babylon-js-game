@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es5",
+        "noImplicitAny": false,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "moduleResolution": "node",
+        "outDir": "public/js",
+        "rootDir": ".",
+        "sourceMap": false,
+        "typeRoots": [
+            "./node_modules/babylonjs",
+            "./node_modules/@types",
+            "./node_modules/typestate/dist"
+        ],
+        "types":[
+            "babylonjs"
+        ],
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
